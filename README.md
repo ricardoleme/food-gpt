@@ -8,23 +8,29 @@ O bot utiliza o modelo GPT da OpenAI para gerar respostas para as perguntas dos 
 
 Para que o bot siga um roteiro, um prompt padrão foi desenvolvido. Esse prompt pode ser visto no arquivo [`docs/prompt.md`](./docs/prompt.md).
 
-Com este prompt você poderá adaptar o bot para o seu negócio ou para outros nichos, como clinicas, etc.
+Com este prompt você poderá adaptar o bot para o seu negócio ou para outros nichos, como clinicas, academias, etc.
 
 ![Demo](./docs/demo.png)
 
 ## Como executar?
 
-Para executar o bot, você precisará de uma conta no WhatsApp, do [Node.js](https://nodejs.org/en/) e [Docker](https://www.docker.com/products/docker-desktop/) instalados.
+Para executar o bot, você precisará de uma conta no WhatsApp, do [Node.js](https://nodejs.org/en/) e [Redis Gratuito](https://redis.com/try-free/) instalados.
 
-Você irá precisar também de uma conta e API Key no [OpenAI](https://platform.openai.com/account/api-keys).
+
+É interessante também ter o [Redis Insight](https://download.redisinsight.redis.com/latest/RedisInsight-v2-win-installer.exe) instalado.
+>> A conta free do Redis possibilita até 30 MB RAM, 30 conexões e um database dedicado.
+
+Você irá precisar também de uma conta e API Key no [OpenAI](https://platform.openai.com/account/api-keys). (Se não tiver mais saldo, é possível recarregar de US$ 5 em US$ 5)
 
 Com isso em mãos, você precisará criar um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
 ```env
-OPENAI_API_KEY=sk-xxx <- Sua API Key do OpenAI
-REDIS_HOST=localhost
-REDIS_PORT=6379
+OPENAI_API_KEY=sk-xxx
+REDIS_HOST=redis-something.ec2.cloud.redislabs.com
+REDIS_PORT=16926
 REDIS_DB=0
+REDIS_USERNAME=default
+REDIS_PASSWORD=your-password
 ```
 
 Após isso, você precisará instalar as dependências do projeto:
@@ -279,7 +285,7 @@ Para que o bot funcione, o modelo precisa de um contexto inicial:
 const customerChat = ChatCompletionRequestMessage[
   {
     role: "system",
-    content: "Você é uma assistente virtual de atendimento de uma pizzaria chamada Los Italianos. Você deve ser educada, atenciosa, amigável, cordial e muito paciente..."
+    content: "Você é uma assistente virtual de atendimento de uma pizzaria chamada Seu Levain. Você deve ser educada, atenciosa, amigável, cordial e muito paciente..."
   },
 ]
 ```
@@ -564,29 +570,6 @@ async function start(client: Whatsapp) {
 }
 ```
 
-Se você não possuir o Redis instalado no seu computador, poderá utilizar o Docker para subir um container com o Redis através do docker-compose:
-
-```yaml
-version: "3.1"
-services:
-  redis:
-    image: redis
-    restart: always
-    ports:
-      - 6379:6379
-    volumes:
-      - redis-data:/data
-
-volumes:
-  redis-data:
-```
-
-Para subir o container, basta executar o comando:
-
-```bash
-docker-compose up -d
-```
-
 E em seguida, iremos subir o bot novamente:
 
 ```bash
@@ -729,4 +712,3 @@ Espero que tenha gostado 🧡
 
 -- Felipe Fontoura, @DevSamurai
 
-PS: Se você curtiu esse conteúdo, vai curtir também minha newsletter, inscreva-se em https://st.devsamurai.com.br/f7tvr6rx/index.html

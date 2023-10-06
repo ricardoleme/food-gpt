@@ -6,7 +6,7 @@ import { redis } from "./lib/redis"
 
 import { initPrompt } from "./utils/initPrompt"
 
-// https://wa.me/+5512982754592
+
 interface CustomerChat {
   status?: "open" | "closed"
   orderCode: string

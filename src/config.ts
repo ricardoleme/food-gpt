@@ -10,5 +10,7 @@ export const config = {
     host: process.env.REDIS_HOST || "localhost",
     port: (process.env.REDIS_PORT as unknown as number) || 6379,
     db: (process.env.REDIS_DB as unknown as number) || 0,
+    username: (process.env.REDIS_USERNAME || "admin"),
+    password: (process.env.REDIS_PASSWORD)
   },
 }
